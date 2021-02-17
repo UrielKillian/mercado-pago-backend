@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @Tag(name = "users", description = "Users API")
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "https://ecommerce-open.wep.app")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class UserController {
 
     @Autowired

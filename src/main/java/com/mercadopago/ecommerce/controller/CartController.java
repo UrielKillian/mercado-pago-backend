@@ -30,7 +30,7 @@ import java.util.stream.Collectors;
 @Tag(name="cart", description = "cart API")
 @RestController
 @RequestMapping("/api")
-@CrossOrigin(origins = "https://ecommerce-open.wep.app")
+@CrossOrigin(origins = "*", methods= {RequestMethod.GET,RequestMethod.POST})
 public class CartController {
 
     @Autowired
