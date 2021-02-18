@@ -9,8 +9,7 @@ import com.mercadopago.ecommerce.resource.CartResource;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.Preference;
-import com.mercadopago.resources.datastructures.preference.Item;
-import com.mercadopago.resources.datastructures.preference.Payer;
+import com.mercadopago.resources.datastructures.preference.*;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.modelmapper.ModelMapper;
@@ -56,6 +55,7 @@ public class CartController {
     public ResponseEntity testing(){
         try{
             MercadoPago.SDK.setAccessToken("APP_USR-5926442828997072-021405-9af87e32da2cafbf2b881324d48a1796-715317686");
+            MercadoPago.SDK.setIntegratorId("dev_2e4ad5dd362f11eb809d0242ac130004");
         }catch (MPConfException e){
             e.printStackTrace();
         }
@@ -70,11 +70,25 @@ public class CartController {
                     .setPictureUrl("https://s3.amazonaws.com/wordpress-media-s3/wp-content/uploads/2019/12/02095839/int-17-16.jpg")
                     .setUnitPrice((float)1.00);
             Payer payer = new Payer();
-            payer.setName("Hello world");
+                payer.setName("Lalo Landa");
+                payer.setIdentification(new Identification().setType("DNI").setNumber("22334445"));
+                payer.setEmail("test_user_46542185@testuser.com");
+                payer.setPhone(new Phone().setAreaCode("52").setNumber("5549737300"));
+                payer.setAddress(new Address().setStreetName("Insurgente Sur").setStreetNumber(1602).setZipCode("03940"));
             preference.setPayer(payer);
             preference.appendItem(item);
             preference.setExternalReference("urielkillian2607@hotmail.com");
             preference.setNotificationUrl("https://ecommerce-mercado-pago-backend.herokuapp.com/api/cart/notifications");
+            PaymentMethods paymentMethods = new PaymentMethods();
+            paymentMethods.setInstallments(6)
+                    .setExcludedPaymentMethods("diners")
+                    .setExcludedPaymentTypes("atm");
+
+            preference.setPaymentMethods(paymentMethods);
+            BackUrls backUrls = new BackUrls();
+            backUrls.setFailure("http://google.com");
+            backUrls.setPending("http://steam.com");
+            backUrls.setSuccess("http://upc.edu.pe");
             preference = preference.save();
             return ResponseEntity.ok(preference.save().getInitPoint());
         } catch (MPException e){
