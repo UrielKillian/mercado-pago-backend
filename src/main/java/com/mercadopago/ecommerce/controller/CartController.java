@@ -71,7 +71,8 @@ public class CartController {
                     .setPictureUrl("https://s3.amazonaws.com/wordpress-media-s3/wp-content/uploads/2019/12/02095839/int-17-16.jpg")
                     .setUnitPrice((float)50.00);
             Payer payer = new Payer();
-                payer.setName("Lalo").setSurname("Landa");
+                payer.setName("Lalo");
+                payer.setSurname("Landa");
                 payer.setIdentification(new Identification().setType("DNI").setNumber("22334445"));
                 payer.setEmail("test_user_46542185@testuser.com");
                 payer.setPhone(new Phone().setAreaCode("52").setNumber("5549737300"));
@@ -89,7 +90,6 @@ public class CartController {
             backUrls.setFailure("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
             backUrls.setPending("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
             backUrls.setSuccess("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
-            preference.setAutoReturn(Preference.AutoReturn.approved);
             preference = preference.save();
             return ResponseEntity.ok(preference.save().getInitPoint());
         } catch (MPException e){
