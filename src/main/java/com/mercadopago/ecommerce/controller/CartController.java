@@ -86,9 +86,9 @@ public class CartController {
 
             preference.setPaymentMethods(paymentMethods);
             BackUrls backUrls = new BackUrls();
-            backUrls.setFailure("https://ecommerce-mercado-pago-frontend.herokuapp.com/failure");
-            backUrls.setPending("https://ecommerce-mercado-pago-frontend.herokuapp.com/pending");
-            backUrls.setSuccess("https://ecommerce-mercado-pago-frontend.herokuapp.com/success");
+            backUrls.setFailure("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
+            backUrls.setPending("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
+            backUrls.setSuccess("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
             preference = preference.save();
             return ResponseEntity.ok(preference.save().getInitPoint());
         } catch (MPException e){
