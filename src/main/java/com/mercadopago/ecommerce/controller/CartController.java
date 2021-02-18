@@ -91,7 +91,7 @@ public class CartController {
             backUrls.setPending("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
             backUrls.setSuccess("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
             preference = preference.save();
-            return ResponseEntity.ok(preference.save().getInitPoint());
+            return ResponseEntity.ok(preference.save().getInitPoint(), preference.setAutoReturn(Preference.AutoReturn.approved););
         } catch (MPException e){
             throw new ResourceNotFoundException("Something was wrong", e);
         }
