@@ -54,7 +54,7 @@ public class CartController {
     @PostMapping("/cart/checkout")
     public ResponseEntity testing(){
         try{
-            MercadoPago.SDK.setAccessToken("APP_USR-5926442828997072-021405-9af87e32da2cafbf2b881324d48a1796-715317686");
+            MercadoPago.SDK.setAccessToken("APP_USR-8208253118659647-112521-dd670f3fd6aa9147df51117701a2082e-677408439");
             MercadoPago.SDK.setIntegratorId("dev_2e4ad5dd362f11eb809d0242ac130004");
         }catch (MPConfException e){
             e.printStackTrace();
@@ -68,7 +68,7 @@ public class CartController {
                     .setQuantity(1)
                     .setDescription("Producto de prueba")
                     .setPictureUrl("https://s3.amazonaws.com/wordpress-media-s3/wp-content/uploads/2019/12/02095839/int-17-16.jpg")
-                    .setUnitPrice((float)1.00);
+                    .setUnitPrice((float)50.00);
             Payer payer = new Payer();
                 payer.setName("Lalo Landa");
                 payer.setIdentification(new Identification().setType("DNI").setNumber("22334445"));
@@ -86,9 +86,9 @@ public class CartController {
 
             preference.setPaymentMethods(paymentMethods);
             BackUrls backUrls = new BackUrls();
-            backUrls.setFailure("http://google.com");
-            backUrls.setPending("http://steam.com");
-            backUrls.setSuccess("http://upc.edu.pe");
+            backUrls.setFailure("https://ecommerce-mercado-pago-frontend.herokuapp.com/failure");
+            backUrls.setPending("https://ecommerce-mercado-pago-frontend.herokuapp.com/pending");
+            backUrls.setSuccess("https://ecommerce-mercado-pago-frontend.herokuapp.com/success");
             preference = preference.save();
             return ResponseEntity.ok(preference.save().getInitPoint());
         } catch (MPException e){
