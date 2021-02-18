@@ -8,6 +8,7 @@ import com.mercadopago.ecommerce.exception.ResourceNotFoundException;
 import com.mercadopago.ecommerce.resource.CartResource;
 import com.mercadopago.exceptions.MPConfException;
 import com.mercadopago.exceptions.MPException;
+import com.mercadopago.resources.Payment;
 import com.mercadopago.resources.Preference;
 import com.mercadopago.resources.datastructures.preference.*;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -63,18 +64,18 @@ public class CartController {
             Preference preference = new Preference();
             // Create a preference item
             Item item =  new Item();
-            item.setTitle("Mi producto")
+            item.setTitle("Xiaomi Mi 9 SE")
                     .setId("1234")
                     .setQuantity(1)
-                    .setDescription("Producto de prueba")
+                    .setDescription("Dispositivo móvil de Tienda e-commerce")
                     .setPictureUrl("https://s3.amazonaws.com/wordpress-media-s3/wp-content/uploads/2019/12/02095839/int-17-16.jpg")
                     .setUnitPrice((float)50.00);
             Payer payer = new Payer();
-                payer.setName("Lalo Landa");
+                payer.setName("Lalo").setSurname("Landa");
                 payer.setIdentification(new Identification().setType("DNI").setNumber("22334445"));
                 payer.setEmail("test_user_46542185@testuser.com");
                 payer.setPhone(new Phone().setAreaCode("52").setNumber("5549737300"));
-                payer.setAddress(new Address().setStreetName("Insurgente Sur").setStreetNumber(1602).setZipCode("03940"));
+                payer.setAddress(new Address().setStreetName("Insurgentes Sur").setStreetNumber(1602).setZipCode("03940"));
             preference.setPayer(payer);
             preference.appendItem(item);
             preference.setExternalReference("urielkillian2607@hotmail.com");
@@ -83,12 +84,12 @@ public class CartController {
             paymentMethods.setInstallments(6)
                     .setExcludedPaymentMethods("diners")
                     .setExcludedPaymentTypes("atm");
-
             preference.setPaymentMethods(paymentMethods);
             BackUrls backUrls = new BackUrls();
             backUrls.setFailure("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
             backUrls.setPending("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
             backUrls.setSuccess("https://ecommerce-mercado-pago-backend.herokuapp.com/paymentCondition");
+            preference.setAutoReturn(Preference.AutoReturn.approved);
             preference = preference.save();
             return ResponseEntity.ok(preference.save().getInitPoint());
         } catch (MPException e){
