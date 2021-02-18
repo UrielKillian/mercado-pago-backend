@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Tag(name="cart", description = "cart API")
@@ -63,12 +64,17 @@ public class CartController {
             // Create a preference item
             Item item =  new Item();
             item.setTitle("Mi producto")
+                    .setId("1234")
                     .setQuantity(1)
+                    .setDescription("Producto de prueba")
+                    .setPictureUrl("https://s3.amazonaws.com/wordpress-media-s3/wp-content/uploads/2019/12/02095839/int-17-16.jpg")
                     .setUnitPrice((float)1.00);
             Payer payer = new Payer();
             payer.setName("Hello world");
             preference.setPayer(payer);
             preference.appendItem(item);
+            preference.setExternalReference("urielkillian2607@hotmail.com");
+            preference.setNotificationUrl("https://ecommerce-mercado-pago-backend.herokuapp.com/api/cart/notifications");
             preference = preference.save();
             return ResponseEntity.ok(preference.save().getInitPoint());
         } catch (MPException e){
@@ -94,6 +100,26 @@ public class CartController {
 
         model.addAttribute("payment", payment);
         return "ok";
+    }
+
+    @PostMapping("/cart/notifications")
+    public ResponseEntity<?>paymentNotification(@RequestParam(required = false) Long id, @RequestParam(name = "data.id", required = false) Long dataId, @RequestParam(required = false) String type, @RequestParam(required = false) String topic, @RequestBody Map<String, Object> requestBody){
+        if(id != null && topic != null){
+            System.out.println("============= RECEIVED PIN =============");
+            System.out.println("Id: " + id);
+            System.out.println("Topic: " + topic);
+            System.out.println(requestBody);
+            System.out.println("=========================================");
+        } else if (dataId != null && type != null){
+            System.out.println("============== NEW WEB HOOK =============");
+            System.out.println("Data Id: " + dataId);
+            System.out.println("Topic: " + type);
+            System.out.println(requestBody);
+            System.out.println("==========================================");
+        } else{
+            return ResponseEntity.badRequest().build();
+        }
+        return ResponseEntity.ok(200);
     }
 
     private CartResource convertToResource(Cart entity){
